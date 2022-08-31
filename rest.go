@@ -27,9 +27,9 @@ func CreateHuman(humans map[int]Human) http.Handler {
 		}
 
 		// Super smart way of generating IDs
-		id := len(humans) + 1
+		human.ID = len(humans) + 1
 
-		humans[id] = human
+		humans[human.ID] = human
 
 		JSONResponse(w, http.StatusCreated, nil)
 	})
