@@ -9,10 +9,12 @@ import (
 	"net/http/httptest"
 	"testing"
 	"time"
+
+	"github.com/youshy/call-me-maybe/types"
 )
 
 func BenchmarkCreateHumans(b *testing.B) {
-	humans := make(map[int]Human, 0)
+	humans := make(map[int]types.Human, 0)
 
 	ts := httptest.NewServer(CreateHuman(humans))
 	defer ts.Close()
@@ -28,7 +30,7 @@ func BenchmarkCreateHumans(b *testing.B) {
 	rand.Seed(time.Now().UnixNano())
 
 	for i := 0; i < b.N; i++ {
-		human := Human{
+		human := types.Human{
 			FirstName:  fmt.Sprint(rand.Intn(1000000)),
 			LastName:   fmt.Sprint(rand.Intn(1000000)),
 			Age:        rand.Intn(100),
@@ -52,13 +54,13 @@ func BenchmarkCreateHumans(b *testing.B) {
 	}
 }
 
-var gethumans = make(map[int]Human, 0)
+var gethumans = make(map[int]types.Human, 0)
 
 func init() {
 	rand.Seed(time.Now().UnixNano())
 
 	for i := 0; i < 500000; i++ {
-		human := Human{
+		human := types.Human{
 			FirstName:  fmt.Sprint(rand.Intn(1000000)),
 			LastName:   fmt.Sprint(rand.Intn(1000000)),
 			Age:        rand.Intn(100),

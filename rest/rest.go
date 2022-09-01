@@ -4,21 +4,14 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+
+	"github.com/youshy/call-me-maybe/types"
 )
 
-// Data type
-type Human struct {
-	ID         int
-	FirstName  string
-	LastName   string
-	Age        int
-	LikesPizza bool
-}
-
 // Create One Human
-func CreateHuman(humans map[int]Human) http.Handler {
+func CreateHuman(humans map[int]types.Human) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var human Human
+		var human types.Human
 
 		err := json.NewDecoder(r.Body).Decode(&human)
 		if err != nil {
@@ -36,7 +29,7 @@ func CreateHuman(humans map[int]Human) http.Handler {
 }
 
 // Get a human
-func GetHuman(humans map[int]Human) http.Handler {
+func GetHuman(humans map[int]types.Human) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 

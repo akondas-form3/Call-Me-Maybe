@@ -1,3 +1,9 @@
 package main
 
-type server struct{}
+import (
+	pb "github.com/youshy/call-me-maybe/grpc/humans"
+)
+
+type server struct {
+	pb.UnimplementedHumansServer
+}
