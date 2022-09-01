@@ -13,7 +13,7 @@ import (
 	"github.com/youshy/call-me-maybe/types"
 )
 
-func BenchmarkCreateHumans(b *testing.B) {
+func BenchmarkCreateHumansREST(b *testing.B) {
 	humans := make(map[int]types.Human, 0)
 
 	ts := httptest.NewServer(CreateHuman(humans))
@@ -70,7 +70,7 @@ func init() {
 	}
 }
 
-func BenchmarkGetHumans(b *testing.B) {
+func BenchmarkGetHumansREST(b *testing.B) {
 	ts := httptest.NewServer(GetHuman(gethumans))
 	defer ts.Close()
 

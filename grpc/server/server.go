@@ -17,7 +17,7 @@ import (
 
 var (
 	port    = flag.Int("port", 56565, "The server port")
-	howmany = flag.Int("howmany", 500000, "How many humans should be created in a map")
+	howmany = flag.Int("howmany", 5000000, "How many humans should be created in a map")
 )
 
 type humanServer struct {
@@ -102,5 +102,6 @@ func main() {
 
 	pb.RegisterHumansServer(grpcServer, newServer(*howmany))
 
+	log.Println("Server running...")
 	grpcServer.Serve(lis)
 }
