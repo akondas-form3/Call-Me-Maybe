@@ -34,6 +34,16 @@ func (s *humanServer) GetHuman(ctx context.Context, in *pb.ID) (*pb.Human, error
 	return mapHumanToPB(human), nil
 }
 
+func mapHumanToPB(human types.Human) *pb.Human {
+	return &pb.Human{
+		Id:         int32(human.ID),
+		Firstname:  human.FirstName,
+		Lastname:   human.LastName,
+		Age:        int32(human.Age),
+		Likespizza: human.LikesPizza,
+	}
+}
+
 func (s *humanServer) CreateHuman(ctx context.Context, in *pb.Human) (*pb.ID, error) {
 	h := mapPBToHuman(in)
 
@@ -42,6 +52,15 @@ func (s *humanServer) CreateHuman(ctx context.Context, in *pb.Human) (*pb.ID, er
 	s.humans[h.ID] = h
 
 	return &pb.ID{Id: int32(h.ID)}, nil
+}
+
+func mapPBToHuman(human *pb.Human) types.Human {
+	return types.Human{
+		FirstName:  human.Firstname,
+		LastName:   human.Lastname,
+		Age:        int(human.Age),
+		LikesPizza: human.Likespizza,
+	}
 }
 
 func makeHumans(howmany int) map[int]types.Human {
@@ -60,25 +79,6 @@ func makeHumans(howmany int) map[int]types.Human {
 	}
 
 	return hm
-}
-
-func mapHumanToPB(human types.Human) *pb.Human {
-	return &pb.Human{
-		Id:         int32(human.ID),
-		Firstname:  human.FirstName,
-		Lastname:   human.LastName,
-		Age:        int32(human.Age),
-		Likespizza: human.LikesPizza,
-	}
-}
-
-func mapPBToHuman(human *pb.Human) types.Human {
-	return types.Human{
-		FirstName:  human.Firstname,
-		LastName:   human.Lastname,
-		Age:        int(human.Age),
-		LikesPizza: human.Likespizza,
-	}
 }
 
 func newServer(amount int) *humanServer {

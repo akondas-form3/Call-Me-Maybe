@@ -22,6 +22,16 @@ func getHuman(client pb.HumansClient, id int) (types.Human, error) {
 	return mapPBToHuman(human), nil
 }
 
+func mapHumanToPB(human types.Human) *pb.Human {
+	return &pb.Human{
+		Id:         int32(human.ID),
+		Firstname:  human.FirstName,
+		Lastname:   human.LastName,
+		Age:        int32(human.Age),
+		Likespizza: human.LikesPizza,
+	}
+}
+
 func createHuman(client pb.HumansClient, human types.Human) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -34,16 +44,6 @@ func createHuman(client pb.HumansClient, human types.Human) (int, error) {
 	}
 
 	return int(id.Id), nil
-}
-
-func mapHumanToPB(human types.Human) *pb.Human {
-	return &pb.Human{
-		Id:         int32(human.ID),
-		Firstname:  human.FirstName,
-		Lastname:   human.LastName,
-		Age:        int32(human.Age),
-		Likespizza: human.LikesPizza,
-	}
 }
 
 func mapPBToHuman(human *pb.Human) types.Human {
