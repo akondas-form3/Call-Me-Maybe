@@ -8,7 +8,9 @@ import (
 	"github.com/youshy/call-me-maybe/types"
 )
 
-// Create One Human
+// Create One Human takes a map of humans which represents the database.
+// Normally there would be a call to the DB, but for the sake of simplicity,
+// there isn't one.
 func CreateHuman(humans map[int]types.Human) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var human types.Human
@@ -28,7 +30,8 @@ func CreateHuman(humans map[int]types.Human) http.Handler {
 	})
 }
 
-// Get a human
+// Get a human takes a map of humans which represents the database.
+// Takes a Query param to get the human's ID.
 func GetHuman(humans map[int]types.Human) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
@@ -55,6 +58,7 @@ func GetHuman(humans map[int]types.Human) http.Handler {
 	})
 }
 
+// JSONResponse is a utility method to generate a valid JSON response.
 func JSONResponse(w http.ResponseWriter, code int, output interface{}) {
 	response, _ := json.Marshal(output)
 	w.Header().Set("Content-Type", "application/json")

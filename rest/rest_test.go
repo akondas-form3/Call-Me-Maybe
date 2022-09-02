@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -16,7 +17,17 @@ import (
 func BenchmarkCreateHumansREST(b *testing.B) {
 	humans := make(map[int]types.Human, 0)
 
-	ts := httptest.NewServer(CreateHuman(humans))
+	l, err := net.Listen("tcp", "127.0.0.1:9998")
+	if err != nil {
+		b.Fatal("error spinning up server", err)
+	}
+
+	ts := httptest.NewUnstartedServer(CreateHuman(humans))
+
+	ts.Listener.Close()
+	ts.Listener = l
+
+	ts.Start()
 	defer ts.Close()
 
 	tr := &http.Transport{}
@@ -71,7 +82,17 @@ func init() {
 }
 
 func BenchmarkGetHumansREST(b *testing.B) {
-	ts := httptest.NewServer(GetHuman(gethumans))
+	l, err := net.Listen("tcp", "127.0.0.1:9999")
+	if err != nil {
+		b.Fatal("error spinning up server", err)
+	}
+
+	ts := httptest.NewUnstartedServer(GetHuman(gethumans))
+
+	ts.Listener.Close()
+	ts.Listener = l
+
+	ts.Start()
 	defer ts.Close()
 
 	tr := &http.Transport{}
