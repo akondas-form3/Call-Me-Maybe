@@ -15,26 +15,15 @@ import (
 )
 
 func BenchmarkCreateHumansREST(b *testing.B) {
-	humans := make(map[int]types.Human, 0)
-
-	l, err := net.Listen("tcp", "127.0.0.1:9998")
-	if err != nil {
-		b.Fatal("error spinning up server", err)
+	tr := &http.Transport{
+		MaxIdleConnsPerHost: 10,
 	}
-
-	ts := httptest.NewUnstartedServer(CreateHuman(humans))
-
-	ts.Listener.Close()
-	ts.Listener = l
-
-	ts.Start()
-	defer ts.Close()
-
-	tr := &http.Transport{}
 	defer tr.CloseIdleConnections()
 	cl := &http.Client{
 		Transport: tr,
 	}
+
+	serverURI := "9999"
 
 	b.ResetTimer()
 
@@ -53,7 +42,11 @@ func BenchmarkCreateHumansREST(b *testing.B) {
 			b.Fatal("Get:", err)
 		}
 
-		res, err := cl.Post(ts.URL, "application/json", bytes.NewBuffer(payload))
+		res, err := cl.Post(
+			fmt.Sprintf("http://%v:%v/%s", "127.0.0.1", serverURI, "create"),
+			"application/json",
+			bytes.NewBuffer(payload),
+		)
 		if err != nil {
 			b.Fatal("Post:", err)
 		}
