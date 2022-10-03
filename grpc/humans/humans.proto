@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option go_package = "google.golang.org/grpc/examples/route_guide/routeguide";
-option java_multiple_files = true;
-option java_package = "io.grpc.examples.routeguide";
+option go_package           = "google.golang.org/grpc/examples/route_guide/routeguide";
+option java_multiple_files  = true;
+option java_package         = "io.grpc.examples.routeguide";
 option java_outer_classname = "RouteGuideProto";
 
 package humans;
@@ -18,9 +18,9 @@ message ID {
 }
 
 message Human {
-  int32 id = 1;
-  string firstname = 2;
-  string lastname = 3;
-  int32 age = 4;
-  bool likespizza = 5;
+  int32   id          = 1;
+  string  firstname   = 2;
+  string  lastname    = 3;
+  int32   age         = 4;
+  bool    likespizza  = 5;
 }

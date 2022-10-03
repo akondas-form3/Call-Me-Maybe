@@ -8,6 +8,7 @@ import (
 	"github.com/youshy/call-me-maybe/types"
 )
 
+// getHuman is a function to get a human based on ID
 func getHuman(client pb.HumansClient, id int) (types.Human, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -22,6 +23,9 @@ func getHuman(client pb.HumansClient, id int) (types.Human, error) {
 	return mapPBToHuman(human), nil
 }
 
+// mapHumanToPB is a util function
+// to help map struct params
+// to the struct used by gRPC
 func mapHumanToPB(human types.Human) *pb.Human {
 	return &pb.Human{
 		Id:         int32(human.ID),
@@ -32,6 +36,7 @@ func mapHumanToPB(human types.Human) *pb.Human {
 	}
 }
 
+// createHuman is a function to create a human based on the payload
 func createHuman(client pb.HumansClient, human types.Human) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -46,6 +51,9 @@ func createHuman(client pb.HumansClient, human types.Human) (int, error) {
 	return int(id.Id), nil
 }
 
+// mapPBToHuman is a util function
+// to help map gRPC struct
+// to types.Human struct
 func mapPBToHuman(human *pb.Human) types.Human {
 	return types.Human{
 		FirstName:  human.Firstname,
